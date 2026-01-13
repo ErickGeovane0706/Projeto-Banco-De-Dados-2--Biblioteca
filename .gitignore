@@ -1,8 +1,18 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+# --- LOGS (Importante para não subir erros para o GitHub) ---
+*.log
+logs/
+
+# --- SISTEMA OPERACIONAL (Lixo do Windows e Mac) ---
+.DS_Store
+Thumbs.db
+
+# --- DOCKER (Opcional, se tiver volumes locais) ---
+postgres-data/
 
 ### STS ###
 .apt_generated

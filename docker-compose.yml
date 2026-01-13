@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Serviço da Aplicação (API)
+  api:
+    build: .
+    container_name: biblioteca-api
+    ports:
+          - "8081:8080" # Acesso local em localhost:8080
+    environment:
+      # Configuração para conectar no banco 'postgres-db' definido abaixo
+      - DB_HOST=postgres-db
+      - DB_PORT=5432
+      - DB_NAME=biblioteca
+      - DB_USER=postgres
+      - DB_PASS=postgres
+    depends_on:
+      - postgres-db # Espera o banco iniciar (mas não garante que está pronto para conexões)
+    restart: on-failure # Se der erro (ex: banco demorar a subir), tenta de novo
+
+  # Serviço do Banco de Dados
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: biblioteca-db
+    ports:
+      - "5432:5432" # Opcional: só se quiser acessar o banco via DBeaver/PgAdmin localmente
+    environment:
+      - POSTGRES_DB=biblioteca
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data # Garante que os dados não somem se desligar o container
+
+# Definição do volume para persistência de dados
+volumes:
+  postgres-data:
