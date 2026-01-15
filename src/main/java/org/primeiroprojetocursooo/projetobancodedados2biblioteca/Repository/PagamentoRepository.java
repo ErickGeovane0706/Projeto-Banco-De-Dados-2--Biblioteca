@@ -1,21 +1,21 @@
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.Repository;
 
-
-import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Locacao;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Pagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 @Repository
 public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
 
-    // Busca um pagamento associado a uma locação específica
-    Optional<Pagamento> findByLocacao(Locacao locacao);
-
-    // Query personalizada para somar todo o faturamento da biblioteca (Útil para Dashboard)
+    // Soma total geral (você já tinha esse)
     @Query("SELECT SUM(p.valor) FROM Pagamento p")
     Double calcularFaturamentoTotal();
+
+    // NOVO: Soma por intervalo de datas
+    @Query("SELECT SUM(p.valor) FROM Pagamento p WHERE p.dataPagamento BETWEEN :inicio AND :fim")
+    Double calcularFaturamentoPorPeriodo(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
 }

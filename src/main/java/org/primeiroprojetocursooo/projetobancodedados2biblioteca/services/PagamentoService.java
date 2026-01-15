@@ -16,6 +16,15 @@ public class PagamentoService {
 
     private final PagamentoRepository repository;
 
+
+    public Double obterFaturamentoPorPeriodo(LocalDate inicio, LocalDate fim) {
+        if (inicio == null || fim == null) {
+            return 0.0;
+        }
+        Double total = repository.calcularFaturamentoPorPeriodo(inicio, fim);
+        return (total != null) ? total : 0.0;
+    }
+
     @Transactional
     public Pagamento registrarPagamento(Locacao locacao) {
         // 1. Verifica duplicidade

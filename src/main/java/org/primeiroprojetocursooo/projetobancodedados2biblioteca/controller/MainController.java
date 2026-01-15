@@ -49,6 +49,10 @@ public class MainController {
     public void abrirTelaEmprestimos() {
         carregarTela("/fxml/emprestimos.fxml");
     }
+    @FXML
+    public void abrirTelaFaturamento() {
+        carregarTela("/fxml/faturamento.fxml");
+    }
 
     // Método genérico para trocar o CENTRO da tela
     private void carregarTela(String caminhoFxml) {
