@@ -1,63 +1,60 @@
-# 📚 Sistema de Biblioteca — Java + JPA Clássico
+# 📚 Sistema de Biblioteca — Spring Boot + JavaFX
 
-> Um projeto educacional em **Java 17** utilizando **JPA (Jakarta Persistence API)** com foco em **persistência manual e arquitetura em camadas**.  
-> Desenvolvido **sem Spring Boot**, para compreender profundamente o uso do `EntityManager` e o padrão **DAO (Data Access Object)**.
+> Uma evolução do projeto clássico, agora migrado para **Spring Boot 3** com interface gráfica **JavaFX**.
+> O foco deste projeto é demonstrar a **integração de Injeção de Dependência em aplicações Desktop**, segurança com **Spring Security** e persistência automatizada com **Spring Data JPA**.
 
 ---
 
 ## 🚀 Objetivo do Projeto
 
-Criar um **sistema de backend robusto** para gerenciar uma biblioteca, contemplando:
+Criar um **sistema desktop moderno** para gestão de bibliotecas, contemplando:
 
-- 👤 Cadastro de **Usuários**
-- 📘 Cadastro de **Livros** e **Categorias**
-- 🔄 Gerenciamento de **Locações (empréstimos)**
-- 💳 Controle de **Pagamentos** associados às locações
-- 🧩 Implementação de uma **arquitetura limpa e desacoplada** (Entidade → DAO → Serviço)
+- 🖥️ Interface Gráfica (**GUI**) responsiva construída com FXML.
+- 🔐 Sistema de **Login e Autenticação** com criptografia de senhas.
+- 🔄 Ciclo completo de **Empréstimo e Devolução** com cálculo automático de multas/valores.
+- 📊 Relatórios de **Faturamento** por período.
+- 🐳 Ambiente de execução containerizado com **Docker**.
 
 ---
 
 ## 🏛️ Entidades e Relacionamentos
 
-O sistema é formado por cinco entidades principais:
+O domínio do sistema permanece fiel às regras de negócio, mas agora enriquecido com Enums e anotações modernas:
 
-| Entidade  | Descrição | Relacionamentos |
+| Entidade | Descrição | Relacionamentos |
 |------------|------------|----------------|
-| **Usuario** | Representa o cliente da biblioteca. | 1 → * Locacoes |
-| **Categoria** | Gênero do livro (ex: Ficção, Técnico). | 1 → * Livros |
-| **Livro** | Item locado, com preço e status. | * → * Locacoes / 1 → Categoria |
-| **Locacao** | Representa o empréstimo. | * → Livros / 1 → Usuario / 1 → 1 Pagamento |
-| **Pagamento** | Registro financeiro da locação. | 1 → 1 Locacao |
+| **Usuario** | Cliente ou Admin (Tipos: Aluno, Professor, Admin). | 1 → * Locacoes |
+| **Categoria** | Gênero literário (ex: Tecnologia, Romance). | 1 → * Livros |
+| **Livro** | Obra física com controle de estoque (Status). | * → * Locacoes / 1 → Categoria |
+| **Locacao** | O contrato de empréstimo (datas e prazos). | * → Livros / 1 → Usuario / 1 → 1 Pagamento |
+| **Pagamento** | Registro financeiro do fechamento da locação. | 1 → 1 Locacao |
 
-### 🔗 Diagrama (Simplificado)
+### 🔗 Diagrama de Classes
 
 ```mermaid
 erDiagram
     USUARIO ||--o{ LOCACAO : "realiza"
-    CATEGORIA ||--o{ LIVRO : "contém"
-    LIVRO }o--o{ LOCACAO : "é locado em"
-    LOCACAO ||--|| PAGAMENTO : "possui"
+    CATEGORIA ||--o{ LIVRO : "classifica"
+    LIVRO }o--o{ LOCACAO : "contém"
+    LOCACAO ||--|| PAGAMENTO : "gera"
     
     USUARIO {
         int id
-        string nome
         string email
-    }
-    CATEGORIA {
-        int id
-        string nome
+        string senha
+        enum tipo "PROFESSOR/ALUNO"
     }
     LIVRO {
         int id
         string titulo
-        decimal preco
-        string status
+        string isbn
+        enum status "DISPONIVEL/LOCADO"
     }
     LOCACAO {
         int id
-        date dataInicio
-        date dataFim
-        string status
+        date dataLocacao
+        date dataDevolucaoPrevista
+        enum status "ABERTA/FINALIZADA"
     }
     PAGAMENTO {
         int id
@@ -65,133 +62,109 @@ erDiagram
         date dataPagamento
     }
 ```
+ ## 💡 Insights Arquiteturais
 
-## 💡 Insights Arquiteturais
+### 🔹 1. Integração Spring + JavaFX (O Diferencial)
+Diferente de aplicações JavaFX comuns, aqui **não instanciamos Controllers manualmente**.
+* Utilizamos um `SpringApplicationBuilder` para iniciar o contexto do Spring junto com a GUI.
+* Um `FxmlLoader` customizado injeta as dependências (`Services`, `Repositories`) diretamente nos Controllers da tela (`@RequiredArgsConstructor`).
 
-### 🔹 1. Arquitetura em Camadas
+### 🔹 2. Camada de Persistência (Repository Pattern)
+Substituímos os DAOs manuais e o `EntityManager` puro pela interface `JpaRepository`:
+* **Produtividade:** Métodos como `save`, `findById`, `delete` já vêm prontos.
+* **Derived Queries:** Métodos customizados criados apenas pelo nome, ex: `findByDataPagamentoBetween(inicio, fim)` para o relatório financeiro.
 
-| Camada | Função |
-|--------|--------|
-| **entity** | Modela as tabelas via anotações JPA (`@Entity`, `@Table`, `@Id`). |
-| **dao** | Camada de persistência. CRUD e consultas JPQL. |
-| **service** | Lógica de negócio e validação. |
-| **util** | Classes auxiliares, como `JPAUtil` para gerenciar `EntityManager`. |
+### 🔹 3. Regras de Negócio e Segurança
+* **Criptografia:** Senhas salvas no banco são hashadas com **BCrypt**.
+* **Prazos Dinâmicos:**
+    * 🎓 **Aluno:** 7 dias para devolução.
+    * 👨‍🏫 **Professor:** 15 dias para devolução.
+* **Controle de Estado:** Ao emprestar, o livro vira `LOCADO`. Ao devolver, vira `DISPONIVEL` automaticamente.
 
----
-
-### 🔹 2. Padrão **Generic DAO** e **Generic Service**
-
-- `GenericDAO<T>`: Implementa CRUD básico.  
-- `GenericService<T, Y>`: Consome o DAO e expõe operações à aplicação.
-
-**Benefício:**  
-Evita repetição de código — cada entidade (Livro, Usuario etc.) herda os métodos genéricos e só implementa comportamentos específicos.
-
----
-
-### 🔹 3. Mapeamentos JPA
-
-- `@OneToMany / @ManyToOne`: (Usuario → Locacao, Categoria → Livro)  
-- `@ManyToMany`: (Locacao ↔ Livro via `@JoinTable`)  
-- `@OneToOne`: (Locacao ↔ Pagamento)  
-- `FetchType.EAGER`: Usado estrategicamente em carregamentos automáticos.
-
----
-
-### 🔹 4. Lógica de Negócio nos Services
-
-Exemplos:
-
-- 📧 `UsuarioService`: valida e-mails duplicados.  
-- 📘 `LivroService`: define status inicial como `DISPONIVEL`.  
-- 💰 `Pagamento`: calcula valor total via `locacao.getValorTotal()`.
-
----
-
-## 🛠️ Tecnologias e Dependências
-
+🛠️ Tecnologias e Dependências
 | Tecnologia | Função |
 |-------------|--------|
-| **Java 17** | Linguagem principal |
-| **Maven** | Gerenciador de dependências |
-| **JPA (Jakarta Persistence API)** | Persistência de dados |
-| **Hibernate** | Implementação do JPA |
-| **PostgreSQL** | Banco de dados |
-| **SLF4J** | Logging de queries SQL |
+| **Java 17** | Linguagem LTS |
+| **Spring Boot 3** | Framework principal |
+| **JavaFX 17** | Interface Gráfica (GUI) |
+| **Spring Data JPA** | Abstração de persistência |
+| **Docker Compose** | Orquestração de containers |
+| **PostgreSQL** | Banco de Dados Relacional |
+| **Lombok** | Redução de código boilerplate |
+
+## ⚙️ Como Executar o Projeto
+```
+### 🧩 Opção 1: Via Docker (Recomendado)
+*Ideal se você não quiser configurar o banco de dados manualmente.*
+
+1. Certifique-se de ter o **Docker** instalado.
+2. Na raiz do projeto, abra o terminal e execute:
+
+bash
+docker-compose up --build
+O sistema subirá o banco e a aplicação automaticamente.
+
+🧩 Opção 2: Via IDE (Local)
+1. Certifique-se de ter um PostgreSQL rodando na porta 5432.
+
+2. Crie o banco de dados:
+    SQL
+    CREATE DATABASE biblioteca;
+
+3.Execute a classe principal: org.primeiroprojetocursooo...ProjetoBancoDeDados2BibliotecaApplication
+```
+### 🔑 Acesso Inicial (Seed Data)
+
+O sistema cria automaticamente um administrador e dados de teste na primeira execução:
+
+| Credencial | Valor |
+| :--- | :--- |
+| **Email** | `admin@email.com` |
+| **Senha** | `123456` |
 
 ---
 
-## ⚙️ Como Executar o Projeto
+## 📖 Fluxo de Uso (GUI)
 
-### 🧩 Pré-requisitos
+### 🔁 1. Login e Dashboard
+* O usuário acessa com as credenciais seguras.
+* O sistema carrega o menu lateral dinamicamente conforme as permissões do usuário.
 
-- Java 17  
-- Maven  
-- PostgreSQL (localhost:5432)
+### 📚 2. Realizar Empréstimo
+* Seleciona-se um **Usuário** e múltiplos **Livros** (adicionando ao Carrinho).
+* O sistema valida se o livro já está locado.
+* Ao confirmar, define a data de devolução automaticamente baseada no tipo de usuário (**Professor** / **Aluno**).
 
-### 🗄️ Banco de Dados
+### 💰 3. Devolução e Faturamento
+* Na tela de histórico, seleciona-se a locação.
+* O sistema calcula o total: `(Dias Corridos * Preço dos Livros)`.
+* Confirma-se o pagamento e os livros voltam a ficar **DISPONÍVEIS**.
 
-Crie o banco **biblioteca** no PostgreSQL:
+---
 
-```sql
-CREATE DATABASE biblioteca;
-Configuração padrão (persistence.xml):
+## 🧠 Conclusão
 
-makefile
-Copiar código
-Usuário: postgres
-Senha: "Senha"
-⚠️ Atenção: por segurança, altere essa senha antes de publicar o projeto.
+Este projeto representa um salto de maturidade no desenvolvimento Java, demonstrando:
 
-🏗️ Build do Projeto
-bash
-Copiar código
-mvn clean install
-Isso fará o download das dependências e criará os artefatos.
+* ✅ Evolução do **JPA Puro** para **Spring Data**.
+* ✅ Saída do Console para **Interface Gráfica (Desktop)**.
+* ✅ Adoção de Arquitetura de Containers (**Docker**).
+* ✅ Manutenção da **Clean Architecture**, isolando Regras de Negócio (*Services*) da Interface (*Controllers*).
 
-▶️ Execução
-Execute o método main() da classe:
+> 💬 *Um exemplo prático de como modernizar sistemas legados ou criar aplicações Desktop robustas com o poder do Spring Boot.*
 
-Copiar código
-org.primeiroprojetocursooo.projetobancodedados2biblioteca.Main
-Isso abrirá o menu interativo no console, com todas as operações CRUD disponíveis.
-A aplicação encerra apenas com a opção 0 - Sair.
+---
 
-📖 Exemplos de Fluxo (Main.java)
-🔁 1. Cadastrar uma Locação
-Solicita um Usuário
+## ✨ Autor
 
-Solicita um ou mais Livros
+<div align="center">
 
-Altera status dos livros para LOCADO
+**Erick Geovane**
 
-Cria uma Locacao, define LOCADA, e salva via LocacaoService
+[![Gmail Badge](https://img.shields.io/badge/-erickgeovane2002@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:erickgeovane2002@gmail.com)](mailto:erickgeovane2002@gmail.com)
+[![LinkedIn Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/erick-geovane-597732297)](https://www.linkedin.com/in/erick-geovane)
+[![GitHub Badge](https://img.shields.io/badge/-GitHub-black?style=flat-square&logo=Github&logoColor=white&link=https://github.com/ErickGeovane0706)](https://github.com/ErickGeovane0706)
 
-💳 2. Registrar um Pagamento
-Seleciona uma Locação pendente
+*":)"* 🧩
 
-Cria um Pagamento associado
-
-Calcula automaticamente o valor total
-
-Atualiza status da locação para FINALIZADA
-
-🧠 Conclusão
-Este projeto demonstra uma aplicação clássica e didática do JPA, aplicando boas práticas como:
-
-Separação de responsabilidades
-
-Padrões de projeto (DAO, Service)
-
-Uso limpo e manual do EntityManager
-
-Persistência relacional completa e controlada
-
-💬 Um ótimo ponto de partida para quem deseja dominar a base do JPA e Hibernate antes de avançar para frameworks automatizados como Spring Boot.
-
-✨ Autor
-Erick Geovane
-📧 erickgeovane2002@gmail.com
-💻 LinkedIn | GitHub
-
-🧩 “Entender a base é o primeiro passo para dominar o avançado.”
+</div>
