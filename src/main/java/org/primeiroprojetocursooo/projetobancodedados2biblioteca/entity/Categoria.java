@@ -1,3 +1,22 @@
+/*
+ * =============================================================================
+ * ENTIDADE: Categoria
+ * DESCRICAO: Representa as categorias/gêneros do acervo (Ex: Romance, Técnico).
+ * Define o agrupamento lógico dos livros para fins de organização e busca.
+ * -----------------------------------------------------------------------------
+ * RELACIONAMENTOS:
+ * - OneToMany: Uma categoria possui diversos livros associados.
+ * - FetchType.EAGER: Carregamento automático da lista de livros ao buscar categoria.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * ??/01/2026 | Erick Geovane    | Mapeamento da entidade e relação com Livro.
+ * |                  |
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity;
 
 import jakarta.persistence.*;

@@ -1,3 +1,23 @@
+/*
+ * =============================================================================
+ * CLASSE: FaturamentoController
+ * DESCRICAO: Gerencia a interface de relatórios financeiros da biblioteca.
+ * Permite filtrar e visualizar o total arrecadado em um período.
+ * Implementa formatação PT-BR para DatePickers e correção de foco.
+ * -----------------------------------------------------------------------------
+ * PRINCIPAIS RECURSOS:
+ * - Filtro por período (Data Início / Data Fim).
+ * - Conversão de formato dd/MM/yyyy para LocalDate.
+ * - Listener de 'Auto-commit' para capturar datas sem necessidade de apertar Enter.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 31/01/2026 | [Erivan Barros]       | Criação inicial e lógica de filtragem.
+ * |
+ * =============================================================================
+ */
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 import javafx.fxml.FXML;
@@ -11,6 +31,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+
+
 
 @Component
 @RequiredArgsConstructor

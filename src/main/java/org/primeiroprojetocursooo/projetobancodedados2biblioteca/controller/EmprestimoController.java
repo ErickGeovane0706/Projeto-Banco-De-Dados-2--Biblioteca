@@ -1,5 +1,18 @@
-package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
+/*
+ * =============================================================================
+ * CLASSE: EmprestimoController
+ * DESCRICAO: Controle da View de Empréstimos (JavaFX).
+ * Gerencia Carrinho, Histórico de Locações e Regras de Devolução.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 29/01/2026 | [Erivan Barros]       | Implementação inicial e integração com Services.
+ * 30/01/2026 | [Erivan Barros]      | Adicionado cálculo de multa na devolução.
+ * =============================================================================
+ */
 
+package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +23,6 @@ import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Livro;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Locacao;
-import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Pagamento;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity.Usuario;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.services.LivroService;
 import org.primeiroprojetocursooo.projetobancodedados2biblioteca.services.LocacaoService;

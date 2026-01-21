@@ -1,3 +1,23 @@
+/*
+ * =============================================================================
+ * ENTIDADE: Livro
+ * DESCRICAO: Representa o item principal do acervo da biblioteca.
+ * Armazena dados bibliográficos, estado de conservação e disponibilidade.
+ * -----------------------------------------------------------------------------
+ * RELACIONAMENTOS:
+ * - ManyToOne: Cada livro pertence a uma única Categoria.
+ * - ManyToMany: Um livro pode fazer parte de diversas locações ao longo do tempo.
+ * - Enumerated: O campo 'status' utiliza o Enum LivroStatus (STRING no banco).
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * ??/01/2026 | Erick Geovane    | Mapeamento da entidade, inclusão de novos campos
+ * |                  | (ISBN, Editora) e relação ManyToMany.
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity;
 
 import jakarta.persistence.*;

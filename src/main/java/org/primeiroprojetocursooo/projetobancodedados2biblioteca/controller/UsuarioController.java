@@ -1,3 +1,23 @@
+/*
+ * =============================================================================
+ * CLASSE: UsuarioController
+ * DESCRICAO: Gerencia o cadastro e a manutenção de usuários (leitores e admins).
+ * Controla o formulário de registro e a visualização de perfis no sistema.
+ * -----------------------------------------------------------------------------
+ * PRINCIPAIS RECURSOS:
+ * - Gerenciamento de ComboBox utilizando Enums (TipoUsuario).
+ * - CRUD completo de usuários com feedback visual de mensagens.
+ * - Integração com UsuarioService para persistência e regras de negócio.
+ * - Tratamento de restrições de exclusão (Ex: usuários com pendências).
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 30/01/2026 | Erivan Barros    | Implementação do CRUD de usuários e Enums.
+ * |                  |
+ * =============================================================================
+ */
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 

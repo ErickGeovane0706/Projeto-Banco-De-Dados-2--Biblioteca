@@ -1,3 +1,24 @@
+/*
+ * =============================================================================
+ * CLASSE: LoginController
+ * DESCRICAO: Ponto de entrada do sistema. Responsável pela autenticação de
+ * usuários e transição para o ambiente principal (MainView).
+ * -----------------------------------------------------------------------------
+ * PRINCIPAIS RECURSOS:
+ * - Validação de credenciais via UsuarioService.
+ * - Integração FXMLLoader + ApplicationContext (Spring) para injeção de beans.
+ * - Gerenciamento de troca de Stages e Scenes do JavaFX.
+ * - Passagem de estado (Usuário Logado) para o próximo Controller.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 00/00/2026 | [XXXXXXXXX]       |
+ * |                  |
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 import javafx.fxml.FXML;

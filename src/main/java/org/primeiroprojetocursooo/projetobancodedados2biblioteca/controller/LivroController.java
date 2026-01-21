@@ -1,3 +1,23 @@
+/*
+ * =============================================================================
+ * CLASSE: LivroController
+ * DESCRICAO: Gerencia o ciclo de vida dos livros na interface (CRUD).
+ * Responsável pelo cadastro, listagem, exclusão e atualização do acervo
+ * bibliográfico no sistema.
+ * -----------------------------------------------------------------------------
+ * PRINCIPAIS RECURSOS:
+ * - Vinculação de colunas TableView via PropertyValueFactory.
+ * - Sincronização de ObservableList com o banco de dados via LivroService.
+ * - Tratamento visual de mensagens de erro/sucesso (Feedback ao usuário).
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 31/01/2026 | [Erivan Barros]       | Implementação do CRUD e binding da tabela.
+ * |                  |
+ * =============================================================================
+ */
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 import javafx.collections.FXCollections;

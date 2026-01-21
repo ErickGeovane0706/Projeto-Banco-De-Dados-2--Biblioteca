@@ -1,3 +1,24 @@
+/*
+ * =============================================================================
+ * CLASSE: MainController
+ * DESCRICAO: Controller principal do Dashboard. Gerencia o menu de navegação
+ * e a troca dinâmica de telas (Views) no centro do layout.
+ * -----------------------------------------------------------------------------
+ * PRINCIPAIS RECURSOS:
+ * - Troca dinâmica de conteúdo via BorderPane (setCenter).
+ * - Centralização da lógica de navegação FXML com suporte ao Spring Context.
+ * - Gestão de estado simples (exibição do nome do usuário logado).
+ * - Controle de encerramento de sessão (Logout).
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 30/01/2026 | Erivan Barros    | Estruturação da navegação principal e BorderPane.
+ * |                  |
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.controller;
 
 import javafx.event.ActionEvent;

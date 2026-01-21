@@ -1,3 +1,22 @@
+/*
+ * =============================================================================
+ * ENTIDADE: Pagamento
+ * DESCRICAO: Registra a liquidação financeira de uma locação. Armazena o valor
+ * final recebido e a data da transação para fins de faturamento.
+ * -----------------------------------------------------------------------------
+ * RELACIONAMENTOS:
+ * - OneToOne: Cada pagamento está estritamente vinculado a uma única Locação.
+ * - JoinColumn: A chave estrangeira 'locacao_id' é única, garantindo a integridade.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * ??/01/2026 | Erick Geovane    | Mapeamento da entidade e vínculo com Locacao.
+ * |                  |
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity;
 
 import jakarta.persistence.*;

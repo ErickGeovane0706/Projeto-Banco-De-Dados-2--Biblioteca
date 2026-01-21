@@ -1,3 +1,22 @@
+/*
+ * =============================================================================
+ * ENTIDADE: Locacao
+ * DESCRICAO: Gerencia o registro de empréstimos de livros. Contém a inteligência
+ * de cálculo de períodos, prazos de devolução e integração com pagamentos.
+ * -----------------------------------------------------------------------------
+ * RELACIONAMENTOS:
+ * - ManyToOne: Vinculada ao Usuário que realizou o empréstimo.
+ * - ManyToMany: Gerencia a tabela associativa 'tb_locacao_livro'.
+ * - OneToOne: Possui um vínculo direto e bidirecional com a entidade Pagamento.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * 30/01/2026 | Erick Geovane    | Implementação da lógica de cálculo de valor
+ * |                             | total e mapeamento de tabelas associativas.
+ * =============================================================================
+ */
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity;
 
 import jakarta.persistence.*;

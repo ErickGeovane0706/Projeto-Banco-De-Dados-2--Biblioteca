@@ -1,3 +1,24 @@
+/*
+ * =============================================================================
+ * ENTIDADE: Usuario
+ * DESCRICAO: Gerencia os dados de acesso e perfis dos usuários do sistema.
+ * Atua como a base para autenticação e vinculação de responsabilidades sobre
+ * o acervo (empréstimos).
+ * -----------------------------------------------------------------------------
+ * RELACIONAMENTOS:
+ * - OneToMany: Um usuário pode possuir diversas locações em seu histórico.
+ * - Enumerated: Utiliza TipoUsuario para definir permissões (ALUNO, PROF, ADMIN).
+ * - FetchType.EAGER: Carrega o histórico de locações automaticamente.
+ * -----------------------------------------------------------------------------
+ * HISTÓRICO DE MANUTENÇÃO:
+ * DATA       | AUTOR            | DESCRIÇÃO
+ * -----------|------------------|----------------------------------------------
+ * ??/01/2026 | Erick Geovane    | Mapeamento de perfis, campos únicos (email/matrícula)
+ * |                             | e tratamento de segurança para senhas.
+ * =============================================================================
+ */
+
+
 package org.primeiroprojetocursooo.projetobancodedados2biblioteca.entity;
 
 import jakarta.persistence.*;
